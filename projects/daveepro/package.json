@@ -1,6 +1,17 @@
 {
   "name": "daveepro",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "schematics": "./schematics/collection.json",
+  "ng-add": {
+    "save": "devDependencies"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.schematics.json",
+    "copy:schemas": "cp --parents schematics/*/schema.json ../../dist/daveepro/",
+    "copy:files": "cp --parents -p schematics/*/files/** ../../dist/daveepro/",
+    "copy:collection": "cp schematics/collection.json ../../dist/daveepro/schematics/collection.json",
+    "postbuild": "npm run copy:schemas && npm run copy:files && npm run copy:collection"
+  },
   "peerDependencies": {
     "@angular/common": "^10.2.4",
     "@angular/core": "^10.2.4"
