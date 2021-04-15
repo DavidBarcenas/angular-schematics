@@ -13,6 +13,7 @@
     "postbuild": "npm run copy:schemas && npm run copy:files && npm run copy:collection"
   },
   "peerDependencies": {
+    "@angular-devkit/schematics": "^10.2.1",
     "@angular/common": "^10.2.4",
     "@angular/core": "^10.2.4"
   },
