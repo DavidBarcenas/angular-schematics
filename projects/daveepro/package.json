@@ -1,6 +1,6 @@
 {
   "name": "daveepro",
-  "version": "1.0.0",
+  "version": "3.0.0",
   "schematics": "./schematics/collection.json",
   "ng-add": {
     "save": "devDependencies"
