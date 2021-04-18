@@ -26,3 +26,30 @@ export function createHost(tree: Tree): workspaces.WorkspaceHost {
     },
   };
 }
+
+export async function getHost(tree: Tree, options: any): Promise<any> {
+  const host = createHost(tree);
+  const { workspace } = await workspaces.readWorkspace('/', host);
+  const defaultProject = workspace.extensions.defaultProject || '';
+
+  if (!options.project) {
+    options.project = defaultProject.toString();
+  }
+
+  const project = workspace.projects.get(options.project);
+
+  if (!project) {
+    throw new SchematicsException(`Invalid project name: ${options.project}`);
+  }
+
+  const projectType =
+    project.extensions.projectType === 'application' ? 'app' : 'lib';
+
+  if (!options.path) {
+    options.path = `${project.sourceRoot}/${projectType}`;
+  } else {
+    options.path = `${project.sourceRoot}/${projectType}/${options.path}`;
+  }
+
+  return options;
+}
