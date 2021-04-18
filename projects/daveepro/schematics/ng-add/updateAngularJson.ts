@@ -1,6 +1,6 @@
 import { Tree } from '@angular-devkit/schematics';
 
-export function modifyAngularJson(tree: Tree, projectName: string) {
+export function updateAngularJson(tree: Tree, projectName: string) {
   const fileName = 'angular.json';
   const file = tree.read(fileName);
 
