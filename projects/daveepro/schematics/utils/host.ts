@@ -47,9 +47,10 @@ export async function getHost(tree: Tree, options: any): Promise<any> {
 
   if (!options.path) {
     options.path = `${project.sourceRoot}/${projectType}`;
-  } else {
-    options.path = `${project.sourceRoot}/${projectType}/${options.path}`;
   }
 
-  return options;
+  return {
+    name: options.project,
+    sourceRoot: options.path,
+  };
 }

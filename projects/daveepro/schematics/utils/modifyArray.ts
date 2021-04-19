@@ -3,13 +3,14 @@ import { Change } from '../interfaces/change.interface';
 import { getSourceNodes } from './getNodes';
 import { Context } from './createContext';
 import * as ts from 'typescript';
+import { InsertChange } from './changes';
 
 export function modifyArray(
   context: Context,
   tree: Tree,
   propName: string
 ): Change {
-  const fileText: Buffer = tree.read(context.path);
+  const fileText: Buffer | null = tree.read(context.path);
 
   if (!fileText) {
     throw new SchematicsException(`File does not exist [${context.path}]`);
@@ -52,8 +53,8 @@ export function modifyArray(
     .find((n) => n.kind === ts.SyntaxKind.SyntaxList);
 
   if (!listNode) {
-    throw new SchematicsException();
+    throw new SchematicsException('List node is not defined');
   }
 
-  console.log('listnodes', listNode);
+  return new InsertChange(context.path, listNode.getEnd(), 'routeToAdd');
 }
