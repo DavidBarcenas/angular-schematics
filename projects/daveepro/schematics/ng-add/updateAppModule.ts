@@ -13,7 +13,7 @@ export function updateAppModule(
     projectName,
     '/app.module.ts'
   );
-  const change = modifyArray(context, tree, 'declarations');
+  const change = modifyArray(context, tree, 'declarations', false);
   const declarationRecorder = tree.beginUpdate(context.path);
 
   if (change instanceof InsertChange) {

@@ -19,7 +19,13 @@ export function ngAdd(options: any): Rule {
       '/app.module.ts'
     );
 
-    const change = modifyArray(appModuleContext, tree, 'declarations');
+    const change = modifyArray(
+      appModuleContext,
+      tree,
+      'declarations',
+      false,
+      'route'
+    );
     const declarationRecorder = tree.beginUpdate(appModuleContext.path);
 
     if (change instanceof InsertChange) {

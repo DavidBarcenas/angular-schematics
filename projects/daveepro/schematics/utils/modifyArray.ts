@@ -8,7 +8,9 @@ import { InsertChange } from './changes';
 export function modifyArray(
   context: Context,
   tree: Tree,
-  propName: string
+  propName: string,
+  isObject: boolean,
+  addChange: any
 ): Change {
   const fileText: Buffer | null = tree.read(context.path);
 
@@ -40,15 +42,21 @@ export function modifyArray(
   let nodeIndex = nodeSiblings.indexOf(getSourceFileNodes);
   nodeSiblings = nodeSiblings.slice(nodeIndex);
 
-  const arrayLiteralExpressionNode = nodeSiblings.find(
-    (n) => n.kind === ts.SyntaxKind.ArrayLiteralExpression
+  const literalExpressionNode = nodeSiblings.find(
+    (n) =>
+      n.kind ===
+      (isObject
+        ? ts.SyntaxKind.ObjectLiteralExpression
+        : ts.SyntaxKind.ArrayLiteralExpression)
   );
 
-  if (!arrayLiteralExpressionNode) {
-    throw new SchematicsException(`${propName} is not of type array`);
+  if (!literalExpressionNode) {
+    throw new SchematicsException(
+      `${propName} is not of type ${isObject ? 'object' : 'array'}`
+    );
   }
 
-  const listNode = arrayLiteralExpressionNode
+  const listNode = literalExpressionNode
     .getChildren()
     .find((n) => n.kind === ts.SyntaxKind.SyntaxList);
 
@@ -56,5 +64,5 @@ export function modifyArray(
     throw new SchematicsException('List node is not defined');
   }
 
-  return new InsertChange(context.path, listNode.getEnd(), 'routeToAdd');
+  return new InsertChange(context.path, listNode.getEnd(), addChange);
 }
